@@ -1,0 +1,4 @@
+﻿  LabWork4List.cpp
+C:\Users\bokar\Desktop\Лабы\Программирование\ЛР 4\LabWork4_List\LabWork4List\LabWork4List\LabWork4List.cpp(24,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\bokar\Desktop\Лабы\Программирование\ЛР 4\LabWork4_List\LabWork4List\LabWork4List\LabWork4List.cpp(92): warning C4715: DeleteList: значение возвращается не при всех путях выполнения
+  LabWork4List.vcxproj -> C:\Users\bokar\Desktop\Лабы\Программирование\ЛР 4\LabWork4_List\LabWork4List\Debug\LabWork4List.exe
