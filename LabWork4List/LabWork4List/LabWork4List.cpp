@@ -6,8 +6,10 @@
 using namespace std;
 
 void AddList(int value, int position);
-int DeleteList(int position);
+int DeleteList();
+int DeleteIndexInList(int position);
 void PrintList();
+void InitList();
 
 struct DoubleList //описание узла списка
 {
@@ -16,6 +18,7 @@ struct DoubleList //описание узла списка
     DoubleList* prev; //указатель на предыдущий элемент
 };
 DoubleList* head; //указатель на первый элемент списка
+int Kol_Element = 0;
 
 int main()
 {
@@ -24,25 +27,28 @@ int main()
     srand(time(NULL));
      
     cout << "Hello World!\n";
- 
+    InitList();
+
     int value, position, x;
     do
     {
-        cout << "1. Добавить элемент" << endl;
-        cout << "2. Удалить элемент" << endl;
+        cout << "1. Добавить элемент в конец списка" << endl;
+        cout << "2. Удалить элемент в списоке по индексу" << endl;
         cout << "3. Вывести список" << endl;
+        cout << "4. Удалить весь список" << endl;
         cout << "0. Выйти" << endl;
         cout << "\nНомер операции > "; cin >> x;
         switch (x)
         {
         case 1:
             cout << "Значение > "; cin >> value;
-            cout << "Позиция > "; cin >> position;
+            position = Kol_Element + 1;
             AddList(value, position); break;
         case 2:
             cout << "Позиция > "; cin >> position;
-            DeleteList(position); break;
+            DeleteIndexInList(position + 1); break;
         case 3: PrintList(); break;
+        case 4: DeleteList(); break;
         }
     } while (x != 0);
 }
@@ -68,11 +74,13 @@ void AddList(int value, int position)
         node->next = p;
         p->prev = node;
     }
+    Kol_Element++;
     cout << "\nЭлемент добавлен...\n\n";
 }
-//***********************УДАЛЕНИЕ ЭЛЕМЕНТА***********************
-int DeleteList(int position)
+
+int DeleteIndexInList(int position) //Удаление элемента по индексу
 {
+
     if (head == NULL) { cout << "\nСписок пуст\n\n"; return 0; }
     if (head == head->next)
     {
@@ -90,18 +98,86 @@ int DeleteList(int position)
     }
     cout << "\nЭлемент удален...\n\n";
 }
-//*************************ВЫВОД СПИСКА*************************
-void PrintList()
+
+
+int DeleteList() { // удаление списка
+    
+
+    DoubleList* a = head;
+    if (head == NULL) {
+        cout << "\nСписок пуст\n\n"; return 0;
+    }
+    int i = 0;
+    do
+    {
+        if (head == head->next)
+        {
+            delete head;
+            head = NULL;
+        }
+        else
+        {
+            DoubleList* a = head;
+            for (int i = Kol_Element; i > 1; i--) a = a->next;
+            if (a == head) head = a->next;
+            a->prev->next = a->next;
+            a->next->prev = a->prev;
+            delete a;
+        }
+
+
+    } while (head != NULL); cout << "\n\n";
+    cout << "\nCписок удален" << endl;
+    
+}
+void FillRand(int* arr, int n, int min, int max) {
+
+    for (int i = 0; i < n; i++) {
+        arr[i] = rand() % (int)max + min;
+    }
+   
+}
+void InitList() {
+    int max = 40;
+    int min = 0;
+    DoubleList* node = new DoubleList; //создание нового элемента
+    if (head == NULL) //если список пуст
+    {
+        node->data = rand() % (int)max + min;
+        node->next = node; //установка указателя next
+        node->prev = node; //установка указателя prev
+        head = node; //определяется голова списка
+        Kol_Element++;
+    }
+    for (int i = 0; i < 20; i++) {
+        DoubleList* node = new DoubleList; //создание нового элемента
+        node->data = rand() % (int)max + min; //присвоение элементу значения
+ 
+        DoubleList* p = head;
+        for (int i = Kol_Element; i > 1; i--) p = p->next;
+        p->prev->next = node;
+        node->prev = p->prev;
+        node->next = p;
+        p->prev = node;
+        
+        Kol_Element++;
+    }
+}
+ 
+void PrintList() //Печать списка на консоль
 {
     if (head == NULL) cout << "\nСписок пуст\n\n";
     else
     {
         DoubleList* a = head;
-        cout << "\nЭлементы списка: ";
+        cout << "\nЭлементы списка: " << endl;
+ 
+        int i = 0;
         do
         {
-            cout << a->data << " ";
+            cout << "[" << i << "] " << a->data << endl;
             a = a->next;
+            i++;
         } while (a != head); cout << "\n\n";
     }
 }
