@@ -1,4 +1,8 @@
-﻿#include <stdio.h>
+﻿// Лабораторная работа №4
+// Выполнили студенты группы м3о-219Бк-20 Бокарев, Катвалян
+// 08/11/21
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 
@@ -10,7 +14,6 @@ struct Node {
     Node * next;
 };
 
-
 void print(Node* list);
 void push(Node ** plist, Data d);
 int is_empty(Node* list);
@@ -18,20 +21,16 @@ Data pop(Node** list);
 Data deleteLastNode(Node** plist);
 int* searchByKey(Node* list, int key);
 
-
 int main()
 {
     setlocale(LC_ALL, "Russian");
     system("color F0");
-
     Data test[] = { 21, 17, 3, 10, 3, 1, 8, 0, 6, 7, 2, 14, 17, 38, 24, 4, 3, 17, 20, 23};
     Node * list = NULL;
-    //printf("Empty: %s\n", is_empty(list) ? "YES" : "NO");
 
     for (size_t i = 0; i < sizeof(test)/sizeof(test[0]); i++)//инициализация списка
     {
         push(&list, test[i]);
-        //print(list);
     }
     
     int x = 0;
@@ -52,6 +51,7 @@ int main()
 
             printf("Значение > "); scanf_s("%d", &value);
             push(&list, value);
+            print(list);
             break;
         case 2:
             d = deleteLastNode(&list);
@@ -62,15 +62,11 @@ int main()
             print(list); 
             break;
         case 4: 
-            //printf("Empty: %s\n", is_empty(list) ? "YES" : "NO");
-
             while (!is_empty(list)) {
                 Data d = pop(&list);
                 printf("pop %d :\n", d);
-                //print(list);
             }
             printf("Empty: %s\n", is_empty(list) ? "YES" : "NO");
-            printf("\nСписок удален\n");
             break;
         case 5:
             printf("Значение > "); scanf_s("%d", &value);
@@ -78,12 +74,6 @@ int main()
             break;
         }
     } while (x != 0);
-    
-    /*while (!is_empty(list)) {
-        Data d = deleteLastNode(&list);
-        printf("pop %d :\n", d);
-        print(list);
-    }*/
 
     printf("\n");
     return 0;
@@ -101,11 +91,17 @@ Data pop(Node ** plist) { // удаляет первый элемент
 Data deleteLastNode(Node** plist) //7.	Удаление элемента из конца списка
 {
     Node* toDelete, * secondLastNode;
-
+    if (plist == NULL)
+    {
+        printf("List is already empty.");
+        return 0;
+    }
+    else
+    {
         toDelete = *plist;
         secondLastNode = *plist;
 
-        /* Traverse to the last node of the list */
+        /* меняем указатель до тех пор, пока не дойдем до конца */
         while (toDelete->next != NULL)
         {
             secondLastNode = toDelete;
@@ -118,19 +114,15 @@ Data deleteLastNode(Node** plist) //7.	Удаление элемента из к
         }
         else
         {
-            /* Disconnect link of second last node with last node */
+            /* разрываем связь предпоследнего элемента с последним*/
             secondLastNode->next = NULL;
         }
         Data res = toDelete->data;
-        /* Delete the last node */
+        /* освобождаем память */
         free(toDelete);
-        
-        
         return res;
-    
+    }
 }
-
-
 int is_empty(Node* list) { // проверка на пустоту списка
     return list == NULL;
 }
@@ -144,17 +136,13 @@ void print(Node* list) { // вывести на экран
     printf("\n");
 }
 int* searchByKey(Node* list, int key) { // найти индекс элемента
-
     int overlap = 0;
-    
-    
     for (Node* p = list; p != NULL; p = p->next) {
         if (p->data == key) {
             overlap++;
 
         }
     }
-    
     printf("\n");
     int index = -1;
     int count = 0;
@@ -169,7 +157,6 @@ int* searchByKey(Node* list, int key) { // найти индекс элемен�
             printf("Ключ %d поиска найден. Индекс равен %d\n", key, index);
         }
         query++;
-
     }
     if (index == -1) {
         printf("Ключ %d поиска не найден\n", key);
@@ -181,5 +168,4 @@ void push(Node** plist, Data d) { // положить элемент в нача
     p->data = d;
     p->next = *plist;
     *plist = p;
-    
 }
